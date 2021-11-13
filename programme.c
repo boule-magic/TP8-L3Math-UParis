@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+//Exercice 1 ---------------------------------
+
 typedef struct array {
     int *a;
     int size;
@@ -54,6 +56,8 @@ void print_array_inverse(array* a) {
     }
     printf("]\n");
 }
+
+//Exercice 2 ---------------------------------
 
 typedef struct buffer {
     int* a;
@@ -134,6 +138,8 @@ buffer* read_buffer() {
     } 
 }
 
+//Exercice 3 ---------------------------------
+
 int empty(buffer* a) {
     if(a->size == 0) return 1;
     else return 0;
@@ -150,6 +156,8 @@ int pop(buffer* a) {
     a->size--;
     return a->a[a->size];
 }
+
+//--------------------------------------------
 
 int
 main() {

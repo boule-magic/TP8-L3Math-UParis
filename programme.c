@@ -110,7 +110,7 @@ int snoc(buffer* s, int v) {
     if(s->size == s->cap) {
 	if(extend(s) == -1) return -1;
     }
-    (s->size)++;
+    s->size++;
     s->a[s->size-1] = v;
     return 1;
 }
@@ -123,7 +123,7 @@ void print_buffer(buffer* a) {
 	    printf(", ");
     }
     printf("]\n");
-}
+} 
 
 buffer* read_buffer() {
     int input = 0;
@@ -164,64 +164,68 @@ main() {
 
     //Exercice 1
     printf("Exercice 1:\n");
-    array* a = new_array(10);
-    if(a==NULL) {
+    array* arr = new_array(10);
+    if(arr==NULL) {
 	printf("Erreur d'allocation !");
     }
-    print_array(a);
-    destroy_array(a);
+    print_array(arr);
+    destroy_array(arr);
 
     //Exercice 2
     printf("Exercice 2:\n");
-    buffer* b = read_buffer();
-    if (b != NULL) {
-	print_buffer(b);
-	destroy_buffer(b);
+    buffer* buff = read_buffer();
+    if (buff != NULL) {
+	print_buffer(buff);
+	destroy_buffer(buff);
     }
 
     //Exercice 3
     printf("Exercice 3:\n");
     buffer* c = new_buffer(0);
-    int ch;
-    while ((ch=getchar()) != EOF) {
-	if(ch >= '0' && ch <= '9')
+    int ch, a, b;
+    while (1) {
+	ch = getchar();
+	if(ch == -1 || ch == 'q') {
+	    break;
+	} else if(ch >= '0' && ch <= '9'){
 	    push(c,ch-'0');
+	}
 	else if(ch == '.') {
 	    if(empty(c))
 		printf("La pile est vide !\n");
 	    else
 		printf("Sommet = %d\n",pop(c));
-	}
-	else if(ch == ' ' || ch == '\n') {/*rien*/}
-	else if(ch == 'q') {
-	    destroy_buffer(c);
-	    break;
-	}
-	else if(ch == '+' && c->size >= 2) {
+	} else if(ch == ' ' || ch == '\n') {
+	    /*rien*/
+	} else if(ch == '+' && c->size >= 2) {
 	    push(c,pop(c)+pop(c));
-	}
-	else if(ch == '-' && c->size >= 2) {
-	    // push(c,pop(c)-pop(c));
-	    int delta = pop(c)-pop(c);
-	    if(delta < 0)
-		delta = -delta;
-	    push(c,delta);
-	}
-	else if(ch == '*' && c->size >= 2) {
-	    push(c,pop(c)*pop(c));
-	}
-	else if(ch == '/' && c->size >= 2) {
-	    push(c,pop(c)/pop(c));
-	}
-	else if(ch == '%' && c->size >= 2) {
-	    push(c,pop(c)%pop(c));
-	}
-	else if(ch == '~' && !empty(c)) {
+	} else if(ch == '-' && c->size >= 2) {
+	    a = pop(c);
+	    b = pop(c);
+	    push(c, b - a);
+	} else if(ch == '*' && c->size >= 2) {
+	    a = pop(c);
+	    b = pop(c);
+	    push(c, b * a);
+	} else if(ch == '/' && c->size >= 2) {
+	    a = pop(c);
+	    if(a == 0) {
+		printf("On ne divise pas par zéro !!");
+	    } else {
+		b = pop(c);
+		push(c, b / a);
+	    }
+	} else if(ch == '%' && c->size >= 2) {
+	    a = pop(c);
+	    b = pop(c);
+	    push(c, b % a);
+	} else if(ch == '~' && !empty(c)) {
 	    push(c,-pop(c));
-	}
-	else
+	} else
 	    printf("Erreur\n");
     }
+    destroy_buffer(c);
 
     return 0;
+    //Raphael au 5e pour le code wifi
 }
